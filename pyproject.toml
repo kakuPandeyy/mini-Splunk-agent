@@ -1,0 +1,13 @@
+[project]
+name = "mini-splunk-agent"
+version = "0.1.0"
+description = "Log agent for Mini-Splunk — watches .log files and forwards them to the backend"
+requires-python = ">=3.12"
+dependencies = [
+    "httpx>=0.28.1",
+    "python-dotenv>=1.2.2",
+    "watchdog>=6.0.0",
+]
+
+[project.scripts]
+splunk-agent = "Agent.main:main"
