@@ -5,12 +5,41 @@ A lightweight log-forwarding agent for [Mini-Splunk](https://github.com/kakuPand
 ## Requirements
 
 - Python 3.12+
-- [uv](https://docs.astral.sh/uv/getting-started/installation/) installed
 - A running Mini-Splunk backend
 
 ## Installation
 
-Install the `splunk-agent` command globally using `uv`:
+### Option 1 — pip (recommended for most users)
+
+```bash
+pip install git+https://github.com/kakuPandeyy/mini-Splunk-agent.git
+```
+
+After installation, if running `splunk-agent` gives _"not recognized as an internal or external command"_, your Python Scripts folder is not on PATH. Fix it once:
+
+**Windows (Command Prompt — run as Administrator):**
+```cmd
+for /f "delims=" %i in ('python -c "import sysconfig; print(sysconfig.get_path(\"scripts\"))"') do setx PATH "%PATH%;%i" /M
+```
+
+Then open a **new** terminal and run `splunk-agent`.
+
+**Windows (PowerShell — run as Administrator):**
+```powershell
+$scripts = python -c "import sysconfig; print(sysconfig.get_path('scripts'))"
+[System.Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";$scripts", "Machine")
+```
+
+Then open a **new** terminal and run `splunk-agent`.
+
+> **Alternative (no PATH change needed):** run the agent directly via Python:
+> ```bash
+> python -m Agent.main
+> ```
+
+### Option 2 — uv
+
+Install `splunk-agent` as a global tool:
 
 ```bash
 uv tool install git+https://github.com/kakuPandeyy/mini-Splunk-agent.git
@@ -24,7 +53,19 @@ uvx --from git+https://github.com/kakuPandeyy/mini-Splunk-agent.git splunk-agent
 
 ## Configuration
 
-Create a `.env` file in your working directory with the variables below. All values are optional — defaults are shown.
+Create a `.env` file in your working directory. Download the example:
+
+**Windows (Command Prompt / PowerShell / any terminal with curl):**
+```bash
+curl -o .env https://raw.githubusercontent.com/kakuPandeyy/mini-Splunk-agent/main/.env.example
+```
+
+**Windows (PowerShell only):**
+```powershell
+Invoke-WebRequest -Uri https://raw.githubusercontent.com/kakuPandeyy/mini-Splunk-agent/main/.env.example -OutFile .env
+```
+
+Then edit `.env`:
 
 ```env
 BACKEND_URL=http://localhost:8000
@@ -120,11 +161,21 @@ agent> quit
 ## Upgrading
 
 ```bash
+pip install --upgrade git+https://github.com/kakuPandeyy/mini-Splunk-agent.git
+```
+
+Or with uv:
+```bash
 uv tool upgrade mini-splunk-agent
 ```
 
 ## Uninstalling
 
+```bash
+pip uninstall mini-splunk-agent
+```
+
+Or with uv:
 ```bash
 uv tool uninstall mini-splunk-agent
 ```
