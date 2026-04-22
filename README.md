@@ -5,31 +5,39 @@ A lightweight log-forwarding agent for [Mini-Splunk](https://github.com/kakuPand
 ## Requirements
 
 - Python 3.12+
+- [uv](https://docs.astral.sh/uv/getting-started/installation/) installed
 - A running Mini-Splunk backend
 
 ## Installation
 
-Install directly from GitHub with pip — no clone required:
+Install the `splunk-agent` command globally using `uv`:
 
 ```bash
-pip install git+https://github.com/kakuPandeyy/mini-Splunk-agent.git
+uv tool install git+https://github.com/kakuPandeyy/mini-Splunk-agent.git
 ```
 
-This installs the `splunk-agent` command globally in your Python environment.
+Or run it once without a permanent install:
+
+```bash
+uvx --from git+https://github.com/kakuPandeyy/mini-Splunk-agent.git splunk-agent
+```
 
 ## Configuration
 
-Copy `.env.example` to `.env` in your working directory and edit the values:
+Create a `.env` file in your working directory with the variables below. All values are optional — defaults are shown.
 
-```bash
-# on Linux/macOS
-curl -o .env https://raw.githubusercontent.com/kakuPandeyy/mini-Splunk-agent/main/.env.example
-
-# on Windows (PowerShell)
-Invoke-WebRequest -Uri https://raw.githubusercontent.com/kakuPandeyy/mini-Splunk-agent/main/.env.example -OutFile .env
+```env
+BACKEND_URL=http://localhost:8000
+AGENT_USERNAME=
+AGENT_PASSWORD=
+WATCH_PATH=
+APP_TYPE=python
+BATCH_SIZE=50
+FLUSH_INTERVAL=5.0
+MAX_RETRIES=3
+DEAD_LETTER_FILE=agent_dead_letter.jsonl
+LOG_LEVEL=INFO
 ```
-
-Key variables:
 
 | Variable | Default | Description |
 |---|---|---|
@@ -112,11 +120,11 @@ agent> quit
 ## Upgrading
 
 ```bash
-pip install --upgrade git+https://github.com/kakuPandeyy/mini-Splunk-agent.git
+uv tool upgrade mini-splunk-agent
 ```
 
 ## Uninstalling
 
 ```bash
-pip uninstall mini-splunk-agent
+uv tool uninstall mini-splunk-agent
 ```
